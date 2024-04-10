@@ -3,4 +3,5 @@
     <string name="sendBottomText">Отправить</string>
     <string name="questionFieldText">Задайте вопрос</string>
     <string name="answer">Понял думаю</string>
+    <string name="assistentName">Лучший ассистент</string>
 </resources>

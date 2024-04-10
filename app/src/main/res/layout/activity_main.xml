@@ -7,20 +7,14 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-    <TextView
-            android:id="@+id/chatWindow"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="@dimen/margin_standard"
-            android:layout_marginTop="@dimen/margin_standard"
-            android:layout_marginEnd="@dimen/margin_standard"
-            android:textSize="@dimen/text_size"
-            android:gravity="bottom|start"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/dialogLayout"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="0dp" app:layout_constraintBottom_toTopOf="@+id/dialogLayout"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="8dp" android:layout_marginTop="8dp" android:layout_marginEnd="8dp"
+            android:id="@+id/chatMessageList"/>
     <LinearLayout
             android:id="@+id/dialogLayout"
             android:layout_width="0dp"
