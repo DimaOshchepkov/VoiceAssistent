@@ -4,9 +4,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class ForecastService {
+    // тут ошибка неизвестно почему
     fun getApi(): ForecastApi? {
         val retrofit = Retrofit.Builder()
-            //.baseUrl("https://openweathermap.org/current  " +
             .baseUrl("https://api.openweathermap.org") //Базовая часть адреса
             .addConverterFactory(GsonConverterFactory.create()) //Конвертер, необходимый для преобразования JSON'а в объекты
         .build()

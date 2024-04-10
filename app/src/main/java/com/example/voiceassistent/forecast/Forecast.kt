@@ -8,21 +8,21 @@ import java.io.Serializable
 class Forecast : Serializable {
     @SerializedName("main")
     @Expose
-    var temperature: Temperature? = null
+    var main: Main? = null
 
     @SerializedName("weather")
     @Expose
-    var weather: Weather? = null
+    var weather: ArrayList<Weather?> = ArrayList()
 }
 
-class Temperature {
-    @SerializedName("value")
+class Main {
+    @SerializedName("temp")
     @Expose
-    var value: String? = null
+    var temp: Double? = null
 }
 
 class Weather {
     @SerializedName("description")
     @Expose
-    var value: String? = null
+    var description: String? = null
 }

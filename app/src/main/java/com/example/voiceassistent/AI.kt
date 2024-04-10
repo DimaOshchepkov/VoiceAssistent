@@ -44,8 +44,8 @@ class AI {
 
         if (matcher.find()) {
             val cityName = matcher.group(1)
-            ForecastToString().getForecast(cityName, Consumer {
-                answerCallBack.accept(cityName)
+            ForecastToString().getForecast(cityName, Consumer { forecast ->
+                answerCallBack.accept(forecast)
             })
         } else {
 

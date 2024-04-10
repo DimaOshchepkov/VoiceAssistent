@@ -16,7 +16,7 @@ class ForecastToString {
                 val result = response?.body()
                 if (result != null) {
                     val answer =
-                        "Сейчас где-то ${result.temperature?.value} ${getCorrectString(result.temperature?.value)} и ${result.weather?.value}"
+                        "Сейчас где-то ${result.main?.temp} ${getCorrectString(result.main?.temp.toString())} и ${result.weather[0]?.description}"
                     callback.accept(answer)
                 } else {
                     callback.accept("Не могу узнать погоду")

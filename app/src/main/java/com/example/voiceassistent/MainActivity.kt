@@ -54,17 +54,15 @@ class MainActivity : AppCompatActivity() {
     fun onSend(){
         val prompt = questionText.text.toString()
 
-        AI().getAnswer(prompt, Consumer {
-            @Override
-            fun accept(answer: String ){
-                messageListAdapter.messageList.add(Message(prompt, isSend = true))
-                messageListAdapter.messageList.add(Message(answer, isSend = false))
-                messageListAdapter.notifyDataSetChanged();
-                questionText.setText("") // Очищаем текстовое поле после отправки вопроса
-                dismissKeyboard()
-                textToSpeech.speak(answer, TextToSpeech.QUEUE_FLUSH,null, null )
-                chatMessageList.scrollToPosition(messageListAdapter.messageList.size-1);
-            }
+        AI().getAnswer(prompt, Consumer { answer ->
+            // Обработка полученного ответа
+            messageListAdapter.messageList.add(Message(prompt, isSend = true))
+            messageListAdapter.messageList.add(Message(answer!!, isSend = false))
+            messageListAdapter.notifyDataSetChanged()
+            questionText.setText("") // Очищаем текстовое поле после отправки вопроса
+            dismissKeyboard()
+            textToSpeech.speak(answer, TextToSpeech.QUEUE_FLUSH, null, null)
+            chatMessageList.scrollToPosition(messageListAdapter.messageList.size - 1)
         })
 
 
