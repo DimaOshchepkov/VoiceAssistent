@@ -1,5 +1,6 @@
 package com.example.voiceassistent
 
+import com.example.voiceassistent.cityinformation.CityToString
 import com.example.voiceassistent.forecast.ForecastToString
 import org.threeten.bp.*
 import org.threeten.bp.format.DateTimeFormatter
@@ -39,16 +40,26 @@ class AI {
 
         requestsAndResponses[promptLower]?.invoke()?.let {answerCallBack.accept(it) }
 
-        val cityPattern = Pattern.compile("погода в городе (\\p{L}+)", Pattern.CASE_INSENSITIVE)
-        val matcher = cityPattern.matcher(promptLower)
+        val weatherInCity = Pattern.compile("погода в городе (\\p{L}+)", Pattern.CASE_INSENSITIVE)
+        val matcherCity = weatherInCity.matcher(promptLower)
 
-        if (matcher.find()) {
-            val cityName = matcher.group(1)
+        val infoCity = Pattern.compile("информация о городе (\\p{L}+)", Pattern.CASE_INSENSITIVE)
+        val matcherInfoCity  = infoCity.matcher(promptLower)
+
+        if (matcherCity.find()) {
+            val cityName = matcherCity.group(1)
             ForecastToString().getForecast(cityName, Consumer { forecast ->
                 answerCallBack.accept(forecast)
             })
-        } else {
-
+        }
+        else if (matcherInfoCity.find()) {
+            val cityName = matcherInfoCity.group(1)
+            CityToString().getCityInformaion(cityName, Consumer { info ->
+                answerCallBack.accept(info)
+            })
+        }
+        else {
+            answerCallBack.accept("Не понимаю вас")
         }
     }
 

@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var questionText: EditText
     private lateinit var textToSpeech: TextToSpeech
     private lateinit var chatMessageList: RecyclerView
+    private var prevKeyBoardHeight: Int = 0
 
     protected var messageListAdapter: MessageListAdapter = MessageListAdapter()
 
@@ -48,6 +49,17 @@ class MainActivity : AppCompatActivity() {
         })
         questionText = findViewById(R.id.questionField)
 
+        val contentView = findViewById<View>(android.R.id.content)
+        contentView.viewTreeObserver.addOnGlobalLayoutListener {
+            val keyboardHeight = contentView.rootView.height - contentView.height
+            if (prevKeyBoardHeight - keyboardHeight < 0) { // Если высота клавиатуры больше 100 пикселей (может потребоваться настройка)
+                // Выполните действие, когда клавиатура отображается
+                chatMessageList.scrollToPosition(messageListAdapter.messageList.size - 1)
+            } else {
+                // Выполните действие, когда клавиатура скрывается
+            }
+            prevKeyBoardHeight = keyboardHeight
+        }
     }
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
@@ -64,8 +76,6 @@ class MainActivity : AppCompatActivity() {
             textToSpeech.speak(answer, TextToSpeech.QUEUE_FLUSH, null, null)
             chatMessageList.scrollToPosition(messageListAdapter.messageList.size - 1)
         })
-
-
     }
 
     private fun dismissKeyboard() {
@@ -77,5 +87,6 @@ class MainActivity : AppCompatActivity() {
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
+
 
 }
