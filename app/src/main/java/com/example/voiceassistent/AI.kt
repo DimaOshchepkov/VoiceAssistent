@@ -1,8 +1,15 @@
 package com.example.voiceassistent
 
+import android.annotation.SuppressLint
+import android.os.Build
+import io.reactivex.rxjava3.core.Observable
+import androidx.annotation.RequiresApi
 import com.example.voiceassistent.cityinformation.CityToString
 import com.example.voiceassistent.citytips.BeginningToString
 import com.example.voiceassistent.forecast.ForecastToString
+import com.example.voiceassistent.holidays.ParsingHtmlService
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import org.threeten.bp.*
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.temporal.ChronoUnit
@@ -37,6 +44,8 @@ class AI {
     )
 
 
+    @SuppressLint("CheckResult")
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getAnswer(prompt: String, answerCallBack: Consumer<String?>): Unit {
         val promptLower = prompt.lowercase()
 
@@ -50,6 +59,9 @@ class AI {
 
         val beginningCity = Pattern.compile("город на (\\p{L}+)", Pattern.CASE_INSENSITIVE)
         val matcherBeginningCity = beginningCity.matcher(promptLower)
+
+        val holidayPrompt = Pattern.compile("какой праздник (.*?)[.!?]", Pattern.CASE_INSENSITIVE)
+        val matcherDateHolidays = holidayPrompt.matcher("$promptLower.")
 
         if (matcherCity.find()) {
             val cityName = matcherCity.group(1)
@@ -71,9 +83,26 @@ class AI {
                 }
             })
         }
+        else if (matcherDateHolidays.find()) {
+            val dateHolidays = matcherDateHolidays.group(1)
+            var answer= ""
+            Observable.fromCallable {
+                answer = ParsingHtmlService().getHoliday(dateHolidays)
+                return@fromCallable answer
+            }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    answerCallBack.accept(answer)
+                }
+
+
+        }
         else {
             answerCallBack.accept("Не понимаю вас")
         }
+
+
     }
 
     private fun daysUntilExam(examDate: LocalDate): Long {
