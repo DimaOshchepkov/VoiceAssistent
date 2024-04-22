@@ -1,6 +1,7 @@
 package com.example.voiceassistent
 
 import com.example.voiceassistent.cityinformation.CityToString
+import com.example.voiceassistent.citytips.BeginningToString
 import com.example.voiceassistent.forecast.ForecastToString
 import org.threeten.bp.*
 import org.threeten.bp.format.DateTimeFormatter
@@ -35,6 +36,7 @@ class AI {
         "сколько дней до зачёта" to { daysUntilExam(LocalDate.of(2024, Month.JUNE, 1)).toString() }
     )
 
+
     fun getAnswer(prompt: String, answerCallBack: Consumer<String?>): Unit {
         val promptLower = prompt.lowercase()
 
@@ -46,6 +48,9 @@ class AI {
         val infoCity = Pattern.compile("информация о городе (\\p{L}+)", Pattern.CASE_INSENSITIVE)
         val matcherInfoCity  = infoCity.matcher(promptLower)
 
+        val beginningCity = Pattern.compile("город на (\\p{L}+)", Pattern.CASE_INSENSITIVE)
+        val matcherBeginningCity = beginningCity.matcher(promptLower)
+
         if (matcherCity.find()) {
             val cityName = matcherCity.group(1)
             ForecastToString().getForecast(cityName, Consumer { forecast ->
@@ -56,6 +61,14 @@ class AI {
             val cityName = matcherInfoCity.group(1)
             CityToString().getCityInformaion(cityName, Consumer { info ->
                 answerCallBack.accept(info)
+            })
+        }
+        else if (matcherBeginningCity.find()) {
+            val cityBeginning = matcherBeginningCity.group(1)
+            BeginningToString().getCityInformation(cityBeginning, Consumer { info ->
+                if (info != null) {
+                    answerCallBack.accept(info.joinToString ("\n"))
+                }
             })
         }
         else {
