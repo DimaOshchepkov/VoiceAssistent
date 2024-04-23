@@ -1,6 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.VoiceAssistent" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="AppMenuTheme" parent="Theme.Material3.Dark">
+        <!-- Фоновый цвет меню -->
+        <item name="android:textColor">#FF0000</item>
+        <!-- Цвет текста заголовка пунктов меню -->
+        <item name="android:titleTextColor">#FF0000</item>
+        <!-- Другие настройки темы, если необходимо -->
+    </style>
+
+
+
+    <style name="Base.Theme.VoiceAssistent" parent="Theme.Material3.DayNight">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>

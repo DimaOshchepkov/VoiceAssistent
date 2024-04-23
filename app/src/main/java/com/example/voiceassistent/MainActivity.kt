@@ -3,15 +3,16 @@ package com.example.voiceassistent
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.speech.tts.TextToSpeech
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.voiceassistent.message.Message
@@ -62,6 +63,7 @@ class MainActivity : AppCompatActivity() {
             }
             prevKeyBoardHeight = keyboardHeight
         }
+
     }
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
@@ -88,6 +90,25 @@ class MainActivity : AppCompatActivity() {
             // менеджер скрывает экранную клавиатуру
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.day_settings -> {
+                delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
+            }
+            R.id.night_settings -> {
+                delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
+            }
+            else -> {
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }
