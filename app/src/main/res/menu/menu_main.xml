@@ -13,4 +13,5 @@
             app:showAsAction="never"
             android:id="@+id/night_settings"
             android:title="Ночная тема"/>
+
 </menu>
